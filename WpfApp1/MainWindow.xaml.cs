@@ -30,6 +30,7 @@ namespace WpfApp1
         int moonScaling = 2000;
         double time = 0;
         string focus = "Sun";
+        double speed = 0.2;
 
         public MainWindow()
         {
@@ -50,6 +51,7 @@ namespace WpfApp1
             Moon phobos = new Moon("Phobos", 11.1, 0, 9000 * 10, 0.33, mars);
             Moon deimos = new Moon("Deimos", 6.2, 0, 23000 * 10, 1.26, mars);
 
+
             solarSystem.Add(mercury);
             solarSystem.Add(venus);
             solarSystem.Add(terra);
@@ -61,17 +63,18 @@ namespace WpfApp1
             solarSystem.Add(pluto);
 
             solarSystem.Add(phobos);
-
             solarSystem.Add(moon);
             solarSystem.Add(deimos);
 
 
-            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Interval = TimeSpan.FromSeconds(0.2);
             timer.Tick += timer_Tick;
             timer.Start();
 
-            focus = "Mars";
+            textBoxSpeed.Text = "Speed: one earthday every " + speed + "s";
 
+            focus = "Sun";
+            HideInfo();
             DrawSystem();
 
         }
@@ -87,19 +90,18 @@ namespace WpfApp1
             sortedSolarSystem.Reverse();
             (double, double) pos;
 
+            // Objects with focus 
             if (focus == "Sun")
             {
-
                 // Orbit tracks
                 foreach (SpaceObject spaceObj in sortedSolarSystem)
                 {
                     if (spaceObj.name != "Sun" || spaceObj.name != "The Moon") // middlertidig med månen.
                     {
-
                         DrawOrbitTrack(spaceObj);
                     }
-                }
 
+                }
 
                 // Planets
                 foreach (SpaceObject spaceObj in solarSystem)
@@ -178,11 +180,10 @@ namespace WpfApp1
                 centerSun.Fill = sunColor;
                 SolarSystem.Children.Add(centerSun);
 
-                // Subsystems
+
             }
             else if (focus == "Terra")
             {
-
                 Ellipse centerPlanet = new Ellipse();
                 centerPlanet.Height = 45;
                 centerPlanet.Width = 45;
@@ -194,6 +195,21 @@ namespace WpfApp1
                     if (obj.parent.name == "Terra")
                     {
                         DrawMoon(obj);
+                    }
+                    if (obj.name == "Terra")
+                    {
+                        textBox1.Text = "Planet: " + obj.name;
+                        textBox2.Text = "Object radius: " + obj.objectRadius.ToString() + " km";
+                        textBox3.Text = "Orbital period: " + obj.orbitalPeriod.ToString() + " days";
+                        textBox4.Text = "Orbital Radius: " + obj.orbitalRadius.ToString() + " km";
+                        textBox5.Text = "Orbitals: ";
+                        foreach (SpaceObject spaceObj in solarSystem)
+                        {
+                            if (spaceObj.parent.name == "Terra")
+                            {
+                                textBox5.Text += (spaceObj.name + " ");
+                            }
+                        }
                     }
 
                 }
@@ -212,6 +228,22 @@ namespace WpfApp1
                     {
                         DrawMoon(obj);
                     }
+                    if (obj.name == "Mars")
+                    {
+                        textBox1.Text = "Planet: " + obj.name;
+                        textBox2.Text = "Object radius: " + obj.objectRadius.ToString() + " km";
+                        textBox3.Text = "Orbital period: " + obj.orbitalPeriod.ToString() + " days";
+                        textBox4.Text = "Orbital Radius: " + obj.orbitalRadius.ToString() + " km";
+                        textBox5.Text = "Orbitals: ";
+                        foreach (SpaceObject spaceObj in solarSystem)
+                        {
+                            if (spaceObj.parent.name == "Mars")
+                            {
+                                textBox5.Text += (spaceObj.name + " ");
+                            }
+                        }
+
+                    }
 
                 }
             }
@@ -219,14 +251,15 @@ namespace WpfApp1
 
         public void focusMars(object sender, RoutedEventArgs e)
         {
-
             if (focus == "Mars")
             {
                 focus = "Sun";
-                
-            } else
+                HideInfo();
+            }
+            else
             {
                 focus = "Mars";
+                ShowInfo();
             }
             time = 0;
             SolarSystem.Children.Clear();
@@ -235,20 +268,40 @@ namespace WpfApp1
 
         public void focusTerra(object sender, RoutedEventArgs e)
         {
-
             if (focus == "Terra")
             {
                 focus = "Sun";
-                
-            } else
+                HideInfo();
+            }
+            else
             {
                 focus = "Terra";
-                
+                ShowInfo();
             }
             time = 0;
             SolarSystem.Children.Clear();
             DrawSystem();
 
+        }
+
+        private void HideInfo()
+        {
+            textBox1.Visibility = Visibility.Hidden;
+            textBox2.Visibility = Visibility.Hidden;
+            textBox3.Visibility = Visibility.Hidden;
+            textBox4.Visibility = Visibility.Hidden;
+            textBox5.Visibility = Visibility.Hidden;
+            textBox5.Visibility = Visibility.Hidden;
+        }
+
+        private void ShowInfo()
+        {
+            textBox1.Visibility = Visibility.Visible;
+            textBox2.Visibility = Visibility.Visible;
+            textBox3.Visibility = Visibility.Visible;
+            textBox4.Visibility = Visibility.Visible;
+            textBox5.Visibility = Visibility.Visible;
+            textBox5.Visibility = Visibility.Visible;
         }
 
         private void DrawOrbitTrack(SpaceObject spaceObj)
@@ -324,11 +377,5 @@ namespace WpfApp1
             }
         }
 
-
-
-
     }
-
-
-
 }

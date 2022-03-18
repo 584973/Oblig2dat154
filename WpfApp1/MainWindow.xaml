@@ -9,10 +9,18 @@
     <Grid>
         <Grid Name="Buttons">
             <Button Click="focusMars" Height="40" Width="70" VerticalAlignment="Top">Mars</Button>
-            <Button Click="focusTerra" Height="40" Width="70" VerticalAlignment="Bottom">Terra</Button>
+            <Button Click="focusTerra" Height="40" Width="70" Margin="180,0,0,0" VerticalAlignment="Top">Terra</Button>
         </Grid>
         <Grid Name="SolarSystem">
 
+        </Grid>
+        <Grid>
+            <TextBox x:Name="textBoxSpeed" HorizontalAlignment="Left" Margin="10,10,0,0" Text="Speed" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="10,240,0,0" Text="Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="10,265,0,0" Text="Object Radius" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="textBox3" HorizontalAlignment="Left" Margin="10,300,0,0" Text="Orbital Period" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="textBox4" HorizontalAlignment="Left" Margin="10,340,0,0" Text="Orbital Radius" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="textBox5" HorizontalAlignment="Left" Margin="10,375,0,0" Text="Orbiters: " TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         </Grid>
     </Grid>
     
