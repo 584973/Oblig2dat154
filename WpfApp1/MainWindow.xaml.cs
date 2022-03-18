@@ -47,8 +47,8 @@ namespace WpfApp1
             Planet mars = new Planet("Mars", 6805 / 2, 24.6 / 24, 227943824, 686.98, sun);
 
             Moon moon = new Moon("Luna", 3475 / 2, 29.5, 384400, 27, terra);
-            Moon phobos = new Moon("Phobos", 22.2 / 2, 0, 9000, 8 / 24, mars);
-            Moon deimos = new Moon("Deimos", 6.2, 0, 23000, 1.26, mars);
+            Moon phobos = new Moon("Phobos", 11.1, 0, 9000 * 10, 0.33, mars);
+            Moon deimos = new Moon("Deimos", 6.2, 0, 23000 * 10, 1.26, mars);
 
             solarSystem.Add(mercury);
             solarSystem.Add(venus);
@@ -60,16 +60,17 @@ namespace WpfApp1
             solarSystem.Add(mars);
             solarSystem.Add(pluto);
 
+            solarSystem.Add(phobos);
+
             solarSystem.Add(moon);
-            //solarSystem.Add(phobos);
             solarSystem.Add(deimos);
 
 
-            timer.Interval = TimeSpan.FromSeconds(0.1);
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_Tick;
             timer.Start();
 
-            focus = "Terra";
+            focus = "Mars";
 
             DrawSystem();
 
@@ -94,14 +95,8 @@ namespace WpfApp1
                 {
                     if (spaceObj.name != "Sun" || spaceObj.name != "The Moon") // middlertidig med månen.
                     {
-                        Ellipse orbitTrack = new Ellipse();
-                        orbitTrack.Stroke = System.Windows.Media.Brushes.White;
-                        orbitTrack.StrokeThickness = 1;
-                        orbitTrack.Height = Math.Abs(spaceObj.calcPosition(time).Item1);
-                        orbitTrack.Width = Math.Abs(spaceObj.calcPosition(time).Item1);
-                        orbitTrack.HorizontalAlignment = HorizontalAlignment.Center;
-                        orbitTrack.VerticalAlignment = VerticalAlignment.Center;
-                        SolarSystem.Children.Add(orbitTrack);
+
+                        DrawOrbitTrack(spaceObj);
                     }
                 }
 
@@ -222,6 +217,52 @@ namespace WpfApp1
             }
         }
 
+        public void focusMars(object sender, RoutedEventArgs e)
+        {
+
+            if (focus == "Mars")
+            {
+                focus = "Sun";
+                
+            } else
+            {
+                focus = "Mars";
+            }
+            time = 0;
+            SolarSystem.Children.Clear();
+            DrawSystem();
+        }
+
+        public void focusTerra(object sender, RoutedEventArgs e)
+        {
+
+            if (focus == "Terra")
+            {
+                focus = "Sun";
+                
+            } else
+            {
+                focus = "Terra";
+                
+            }
+            time = 0;
+            SolarSystem.Children.Clear();
+            DrawSystem();
+
+        }
+
+        private void DrawOrbitTrack(SpaceObject spaceObj)
+        {
+            Ellipse orbitTrack = new Ellipse();
+            orbitTrack.Stroke = System.Windows.Media.Brushes.White;
+            orbitTrack.StrokeThickness = 1;
+            orbitTrack.Height = Math.Abs(spaceObj.calcPosition(time).Item1);
+            orbitTrack.Width = Math.Abs(spaceObj.calcPosition(time).Item1);
+            orbitTrack.HorizontalAlignment = HorizontalAlignment.Center;
+            orbitTrack.VerticalAlignment = VerticalAlignment.Center;
+            SolarSystem.Children.Add(orbitTrack);
+        }
+
         private void DrawMoon(SpaceObject obj)
         {
             Ellipse orbitTrack = new Ellipse();
@@ -235,12 +276,11 @@ namespace WpfApp1
 
             Ellipse moon = new Ellipse();
             (double, double) pos = obj.calcPosition(time);
-            Thickness m = new Thickness(pos.Item1 * moonScaling, pos.Item2 * moonScaling, 0, 0);
             moon.Stroke = System.Windows.Media.Brushes.Black;
             moon.Height = 15;
             moon.Width = 15;
             moon.Fill = new SolidColorBrush(Color.FromRgb(100, 100, 100)); ;
-            moon.Margin = m;
+            moon.Margin = new Thickness(pos.Item1 * moonScaling, pos.Item2 * moonScaling, 0, 0);
             moon.Name = obj.name;
             planetList.Add(moon);
             SolarSystem.Children.Add(moon);
