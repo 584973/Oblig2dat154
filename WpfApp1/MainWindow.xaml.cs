@@ -67,16 +67,22 @@ namespace WpfApp1
             solarSystem.Add(deimos);
 
 
-            timer.Interval = TimeSpan.FromSeconds(0.2);
-            timer.Tick += timer_Tick;
-            timer.Start();
+            
 
-            textBoxSpeed.Text = "Speed: one earthday every " + speed + "s";
 
             focus = "Sun";
+            timer.Tick += timer_Tick;
+            initSpeed();
             HideInfo();
             DrawSystem();
 
+        }
+
+        private void initSpeed()
+        {
+            timer.Interval = TimeSpan.FromSeconds(speed);
+            timer.Start();
+            textBoxSpeed.Text = "Speed: one earthday every " + speed + "s";
         }
 
         private void DrawSystem()
@@ -248,6 +254,25 @@ namespace WpfApp1
                 }
             }
         }
+
+        public void speedUp(object sender, RoutedEventArgs e)
+        {
+            speed += 0.1;
+            initSpeed();
+
+        }
+        public void speedDown(object sender, RoutedEventArgs e)
+        {
+            if (speed > 0.1)
+            {
+                speed -= 0.1;
+            }
+
+            initSpeed();
+
+        }
+
+
 
         public void focusMars(object sender, RoutedEventArgs e)
         {
